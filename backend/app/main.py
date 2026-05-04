@@ -7,9 +7,16 @@ from app.routes.analyze import router as analyze_router
 
 app = FastAPI()
 
-# Mount the frontend directory to serve static assets (CSS, JS, Images)
-# This allows the browser to find files like /static/css/style.css
-frontend_path = os.path.join(os.getcwd(), "frontend", "public")
+# Correct the path to the frontend public directory
+# Render runs 'cd backend && uvicorn...', so we need to go up one level to find frontend
+base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+frontend_path = os.path.join(base_dir, "frontend", "public")
+
+# Fallback if the above fails (for local development)
+if not os.path.exists(frontend_path):
+    frontend_path = os.path.join(os.getcwd(), "..", "frontend", "public")
+    frontend_path = os.path.abspath(frontend_path)
+
 app.mount("/static", StaticFiles(directory=frontend_path), name="static")
 
 app.add_middleware(
