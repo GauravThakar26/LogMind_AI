@@ -854,7 +854,7 @@ FATAL 2024-01-15 14:23:03.001 [main] AppServer - Unhandled exception. Service is
         document.getElementById('emptyState').style.display = 'none';
 
         try {
-          const response = await fetch('http://localhost:8000/api/analyze', {
+          const response = await fetch('/api/analyze', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ logs: logInput, projectName, submittedBy })
